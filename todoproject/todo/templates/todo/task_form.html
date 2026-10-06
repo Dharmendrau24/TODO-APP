@@ -1,0 +1,52 @@
+{% extends "todo/base.html" %}
+
+{% block content %}
+
+    <h2>{% if task %}Edit{% else %}Add{% endif %} Task</h2>
+
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                value="{{ task.title|default_if_none:'' }}"
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="3"
+            >{{ task.description|default_if_none:'' }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            {% if task %}Update{% else %}Save{% endif %} Task
+        </button>
+
+        <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="history.back()"
+        >
+            Back
+        </button>
+
+    </form>
+
+{% endblock %}
